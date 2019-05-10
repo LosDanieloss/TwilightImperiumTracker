@@ -1,0 +1,16 @@
+.gradle
+local.properties
+project.properties
+keystore.properties
+uaccount.keystore
+.DS_Store
+*.iml
+*.log
+*.hprof
+build/
+captures/
+.idea/
+proguard-mappings/
+dexguard-mappings/
+dexguard-license.txt
+dexguard.properties
