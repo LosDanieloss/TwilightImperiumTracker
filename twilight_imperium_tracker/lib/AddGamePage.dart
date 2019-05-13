@@ -16,137 +16,137 @@ class _AddGamePageState extends State<AddGamePage> {
 
   @override
   Widget build(BuildContext context) {
+    final _translations = Translations.of(context);
+
     return Scaffold(
       appBar: AppBar(
         elevation: 8,
         centerTitle: true,
-        title: Text(Translations.of(context).text('home_page_title')),),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Card(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: Row(
-                    children: <Widget>[
-                      Text(Translations.of(context).text('my_race')),
-                      DropdownButton<Race>(
-                        value: _game.raceUsed,
-                        onChanged: (Race newRace) {
-                          setState(() {
-                            _game.raceUsed = newRace;
-                          });
-                        },
-                        items: Race.values.map((Race race) {
-                          return DropdownMenuItem<Race>(
-                            value: race,
-                            child: Text(race.toString()),
-                          );
-                        }).toList(),
+        title: Text(_translations.text('home_page_title')),),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: <Widget>[
+                  Center(
+                      child: Text(
+                        _translations.text("pick_result"),
+                        style: TextStyle(fontSize: 16),
                       )
-                    ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: TextField(
-                          decoration: InputDecoration(labelText: Translations.of(context).text('collected_points')),
-                          keyboardType: TextInputType.number,
-                          onChanged: (String collectedPoints) {
-                            setState(() {
-                              _game.points = int.parse(collectedPoints);
-                            });
-                          },
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: TextField(
-                          decoration: InputDecoration(labelText: Translations.of(context).text('goal_points')),
-                          keyboardType: TextInputType.number,
-                          onChanged: (String collectedPoints) {
-                            setState(() {
-                              _game.goal = int.parse(collectedPoints);
-                            });
-                          },
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: Row(
-                    children: <Widget>[
-                      Text("${Translations.of(context).text('winner') }"),
-                      DropdownButton<Race>(
-                        value: _game.gameWinner,
-                        onChanged: (Race newRace) {
-                          setState(() {
-                            _game.gameWinner = newRace;
-                          });
-                        },
-                        items: Race.values.map((Race race) {
-                          return DropdownMenuItem<Race>(
-                            value: race,
-                            child: Text(race.toString()),
-                          );
-                        }).toList(),
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: Row(
+                  Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Radio<GameResult>(
-                        value: GameResult.WIN,
-                        groupValue: _game.result,
-                        onChanged: (GameResult result) {
-                          setState(() {
-                            _game.result = result;
-                          });
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List<Widget>.generate(
+                        GameResult.values.length,
+                            (int index) {
+                          return Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                              children: <Widget>[
+                                Radio<GameResult>(
+                                    value: GameResult.values[index],
+                                    groupValue: _game.result,
+                                    onChanged: (GameResult result) {
+                                      setState(() {_game.result = GameResult.values[index]; });
+                                    }),
+                                GestureDetector(
+                                  child: Text(getUserFriendlyResult(_translations, GameResult.values[index])),
+                                  onTap: () { setState(() {_game.result = GameResult.values[index]; }); },
+                                )
+                              ]);
                         }
-                      ),
-                      Text(GameResult.WIN.toString().substring(11)),
-                      Radio<GameResult>(
-                        value: GameResult.DRAW,
-                        groupValue: _game.result,
-                        onChanged: (GameResult result) {
-                          setState(() {
-                            _game.result = result;
-                          });
-                        }
-                      ),
-                      Text(GameResult.DRAW.toString().substring(11)),
-                      Radio<GameResult>(
-                        value: GameResult.LOSE,
-                        groupValue: _game.result,
-                        onChanged: (GameResult result) {
-                          setState(() {
-                            _game.result = result;
-                          });
-                        }
-                      ),
-                      Text(GameResult.LOSE.toString().substring(11))
-                    ],
+                    ),
                   ),
-                )
-              ],
+                  Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(labelText: _translations.text('collected_points')),
+                            keyboardType: TextInputType.number,
+                            onChanged: (String collectedPoints) {
+                              setState(() {
+                                _game.points = int.parse(collectedPoints);
+                              });
+                            },
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(labelText: _translations.text('goal_points')),
+                            keyboardType: TextInputType.number,
+                            onChanged: (String collectedPoints) {
+                              setState(() {
+                                _game.goal = int.parse(collectedPoints);
+                              });
+                            },
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                        child: Text(
+                          _translations.text("my_race"),
+                          style: TextStyle(fontSize: 16),
+                        )
+                    ),
+                  ),
+                  Wrap(
+                    children: List<Widget>.generate(
+                        Race.values.length,
+                            (int index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: ChoiceChip(
+                              label: Text(getUserFriendlyRaceName(_translations, Race.values[index])),
+                              selected: _game.raceUsed == Race.values[index],
+                              onSelected: (bool selected) { _manageRaceUsed(Race.values[index]); },
+                            ),
+                          );
+                        }
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                        child: Text(
+                          _translations.text("opponents"),
+                          style: TextStyle(fontSize: 16),
+                        )
+                    ),
+                  ),
+                  Wrap(
+                    children: List<Widget>.generate(
+                        Race.values.length,
+                        (int index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: ChoiceChip(
+                              label: Text(getUserFriendlyRaceName(_translations, Race.values[index])),
+                              selected: _game.opponents.contains(Race.values[index])
+                                  || _game.raceUsed == Race.values[index],
+                              onSelected: (bool selected) { _manageOpponents(Race.values[index]); },
+                            ),
+                          );
+                        }
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -157,6 +157,24 @@ class _AddGamePageState extends State<AddGamePage> {
         child: Icon(Icons.save),
       ),
     );
+  }
+
+  _manageRaceUsed(Race _race) {
+    setState(() {
+      if (!_game.opponents.contains(_race)) {
+        _game.raceUsed = _race;
+      }
+    });
+  }
+
+  _manageOpponents(Race _race) {
+    setState(() {
+      if (_game.opponents.contains(_race)) {
+        _game.opponents.remove(_race);
+      } else if (_game.raceUsed != _race){
+        _game.opponents.add(_race);
+      }
+    });
   }
 
   void _saveGame(BuildContext context, Game game) {

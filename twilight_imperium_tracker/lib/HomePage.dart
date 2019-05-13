@@ -46,19 +46,14 @@ class HomePage extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(2.0),
-                child: Text(game.raceUsed.toString()),
+                child: Text(getUserFriendlyRaceName(Translations.of(context), game.raceUsed)),
               ),
               Padding(
                 padding: const EdgeInsets.all(2.0),
                 child: Text(
-                  "${Translations.of(context).text('collected')} ${game.points} ${Translations.of(context).text('points')} ${Translations.of(context).text('goal_was')}: ${game.goal}",
+                  "${Translations.of(context).text('collected')} ${game.points} ${Translations.of(context).text('points')} ${Translations.of(context).text('goal_was')} ${game.goal}",
                   textAlign: TextAlign.left,
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: Text(
-                    "${Translations.of(context).text('winner')} ${game.gameWinner}"),
               ),
               ListView.builder(
                   shrinkWrap: true,
@@ -73,7 +68,7 @@ class HomePage extends StatelessWidget {
                       );
                     return Padding(
                       padding: const EdgeInsets.only(left: 12.0),
-                      child: Text("* ${game.opponents[index - 1]}"),
+                      child: Text("* ${getUserFriendlyRaceName(Translations.of(context), game.opponents[index - 1])}"),
                     );
                   })
             ],
