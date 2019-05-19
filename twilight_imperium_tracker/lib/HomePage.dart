@@ -1,17 +1,46 @@
+import 'dart:convert';
+
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'AddGamePage.dart';
 import 'Game.dart';
-import 'Games.dart';
 import 'Translations.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  var _games = <Game>[];
+  DatabaseReference _gamesRef;
+
+  @override
+  void initState() {
+    super.initState();
+    _gamesRef = FirebaseDatabase.instance.reference().child("uid-404").child("games");
+    _gamesRef.onChildAdded.listen(_onGameAdded);
+    _gamesRef.onChildChanged.listen(_onGameChanged);
+  }
+
+  void _onGameAdded(Event event) {
+    setState(() {
+      _games.add(Game.fromJson(Map<String, dynamic>.from(event.snapshot.value)));
+    });
+  }
+
+  void _onGameChanged(Event event) {
+    var old = _games.singleWhere((game) { return game.key == event.snapshot.key; });
+    setState(() {
+      _games[_games.indexOf(old)] = Game.fromJson(Map<String, dynamic>.from(event.snapshot.value));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final _games = Provider.of<Games>(context).games;
-
     return Scaffold(
       appBar: AppBar(
         elevation: 8,

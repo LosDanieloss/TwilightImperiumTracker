@@ -1,15 +1,32 @@
+import 'package:firebase_database/firebase_database.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'Translations.dart';
 
+part 'Game.g.dart';
+
+@JsonSerializable()
 class Game {
+  String key;
   Race raceUsed;
   int points;
   int goal;
   GameResult result;
-  Race gameWinner;
   var opponents = <Race>[];
+  List<String> test = <String>["A", "B", "C"];
 
 
-  Game({ this.raceUsed, this.points, this.goal, this.result, this.gameWinner, this.opponents });
+  Game({ this.raceUsed, this.points, this.goal, this.result, this.opponents });
+
+  factory Game.fromJson(Map<String, dynamic> json) => _$GameFromJson(json);
+  Map<String, dynamic> toJson() => _$GameToJson(this);
+
+  Game.fromSnapshot(DataSnapshot snapshot)
+      : key = snapshot.key,
+        raceUsed = Race.values[snapshot.value["raceUsed"]],
+        points = snapshot.value["points"],
+        goal = snapshot.value["goal"],
+        result = GameResult.values[snapshot.value["result"]],
+        opponents = snapshot.value["opponents"];
 }
 
 enum Race {
@@ -29,7 +46,7 @@ enum Race {
   FEDERATION_OF_SOL,
   Mentak_Coalition,
   SARDAKK_N_ORR,
-  XXCHA_KINGDOM
+  XXCHA_KINGDOM,
 }
 
 enum GameResult {
@@ -75,6 +92,7 @@ String getUserFriendlyRaceName(Translations translations, Race race) {
     case Race.XXCHA_KINGDOM:
       return translations.text('xxcha_kingdom');
   }
+  return "";
 }
 
 String getUserFriendlyResult(Translations translations, GameResult result) {
@@ -86,4 +104,5 @@ String getUserFriendlyResult(Translations translations, GameResult result) {
     case GameResult.LOSE:
       return translations.text('lose');
   }
+  return "";
 }

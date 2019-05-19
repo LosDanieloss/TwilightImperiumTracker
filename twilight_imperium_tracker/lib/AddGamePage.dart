@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 import 'Game.dart';
-import 'Games.dart';
 import 'Translations.dart';
 
 class AddGamePage extends StatefulWidget {
@@ -12,7 +12,15 @@ class AddGamePage extends StatefulWidget {
 }
 
 class _AddGamePageState extends State<AddGamePage> {
-  final _game = Game(opponents: []);
+  Game _game;
+  DatabaseReference _gamesRef;
+
+  @override
+  void initState() {
+    super.initState();
+    _game = Game(opponents: []);
+    _gamesRef = FirebaseDatabase.instance.reference().child("uid-404").child("games");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -178,8 +186,7 @@ class _AddGamePageState extends State<AddGamePage> {
   }
 
   void _saveGame(BuildContext context, Game game) {
-    final _games = Provider.of<Games>(context);
-    _games.add(game);
+    _gamesRef.push().set(_game.toJson());
     Navigator.pop(context);
   }
 }
