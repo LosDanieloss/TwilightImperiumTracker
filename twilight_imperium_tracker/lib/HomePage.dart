@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'AddGamePage.dart';
 import 'Game.dart';
+import 'MyApp.dart';
 import 'Translations.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _gamesRef = FirebaseDatabase.instance.reference().child("uid-404").child("games");
+    _gamesRef = FirebaseDatabase.instance.reference().child(user.uid).child("games");
     _gamesRef.onChildAdded.listen(_onGameAdded);
     _gamesRef.onChildChanged.listen(_onGameChanged);
   }

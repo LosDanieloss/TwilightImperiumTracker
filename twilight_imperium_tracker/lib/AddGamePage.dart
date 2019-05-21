@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 import 'Game.dart';
+import 'MyApp.dart';
 import 'Translations.dart';
 
 class AddGamePage extends StatefulWidget {
@@ -19,7 +20,7 @@ class _AddGamePageState extends State<AddGamePage> {
   void initState() {
     super.initState();
     _game = Game(opponents: []);
-    _gamesRef = FirebaseDatabase.instance.reference().child("uid-404").child("games");
+    _gamesRef = FirebaseDatabase.instance.reference().child(user.uid).child("games");
   }
 
   @override
