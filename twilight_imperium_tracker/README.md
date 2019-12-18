@@ -8,8 +8,7 @@ Like:
 <!-- Add hyper links to mentioned tools and libs-->
 * Firebase Auth
 * Firebase Database
-* Bloc    
-* Provider
+* Bloc & Flutter Bloc    
 * Json serialization
 
 #### Firebase Auth & Database
@@ -18,10 +17,7 @@ Quite easy authentication method to add users within the system.
 Database is robust storage for users, games and results. 
 Enabling possibility to store games and results related to user and available on different devices.
 
-#### Bloc
+#### Bloc & Flutter Bloc
 
 **\[WIP\]** Decouples business logic from presentation in the clean & standardized ways.
-
-#### Provider
-
-**\[WIP\]** Flutter take on DI
+Also Flutter take on DI.
