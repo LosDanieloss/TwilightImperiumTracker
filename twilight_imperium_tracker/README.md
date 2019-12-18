@@ -1,17 +1,27 @@
 # Twilight Imperium Tracker or TI4 Tracker
 
-It's a Flutter playground. 
-It lets user to track game results in board game called Twilight Imperium 4th Edition.  
+It lets user to track game results in board game called Twilight Imperium 4th Edition.
+It's a Flutter playground for trying out different concepts and libraries.
 
-## Getting Started
+Like:
 
-This project is a starting point for a Flutter application.
+<!-- Add hyper links to mentioned tools and libs-->
+* Firebase Auth
+* Firebase Database
+* Bloc    
+* Provider
+* Json serialization
 
-A few resources to get you started if this is your first Flutter project:
+#### Firebase Auth & Database
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+Quite easy authentication method to add users within the system. 
+Database is robust storage for users, games and results. 
+Enabling possibility to store games and results related to user and available on different devices.
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+#### Bloc
+
+**\[WIP\]** Decouples business logic from presentation in the clean & standardized ways.
+
+#### Provider
+
+**\[WIP\]** Flutter take on DI
