@@ -1,6 +1,7 @@
-# twilight_imperium_tracker
+# Twilight Imperium Tracker or TI4 Tracker
 
-A new Flutter application.
+It's a Flutter playground. 
+It lets user to track game results in board game called Twilight Imperium 4th Edition.  
 
 ## Getting Started
 

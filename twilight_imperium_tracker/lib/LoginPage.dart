@@ -27,10 +27,10 @@ class _LoginPageState extends State<LoginPage> {
         child: RaisedButton(
             child: Text(Translations.of(context).text('login')),
             onPressed: () => {
-              _handleSignIn().then((FirebaseUser user) =>
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()))
-              ).catchError((e) => print(e))
-            }),
+                  _handleSignIn()
+                      .then((FirebaseUser user) => Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage())))
+                      .catchError((e) => print(e))
+                }),
       ),
     );
   }
