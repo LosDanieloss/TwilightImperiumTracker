@@ -7,7 +7,6 @@ import 'MyApp.dart';
 import 'Translations.dart';
 
 class AddGamePage extends StatefulWidget {
-
   @override
   _AddGamePageState createState() => _AddGamePageState();
 }
@@ -31,7 +30,8 @@ class _AddGamePageState extends State<AddGamePage> {
       appBar: AppBar(
         elevation: 8,
         centerTitle: true,
-        title: Text(_translations.text('home_page_title')),),
+        title: Text(_translations.text('home_page_title')),
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -42,32 +42,32 @@ class _AddGamePageState extends State<AddGamePage> {
                 children: <Widget>[
                   Center(
                       child: Text(
-                        _translations.text("pick_result"),
-                        style: TextStyle(fontSize: 16),
-                      )
-                  ),
+                    _translations.text("pick_result"),
+                    style: TextStyle(fontSize: 16),
+                  )),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: List<Widget>.generate(
-                        GameResult.values.length,
-                            (int index) {
-                          return Wrap(
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                              children: <Widget>[
-                                Radio<GameResult>(
-                                    value: GameResult.values[index],
-                                    groupValue: _game.result,
-                                    onChanged: (GameResult result) {
-                                      setState(() {_game.result = GameResult.values[index]; });
-                                    }),
-                                GestureDetector(
-                                  child: Text(getUserFriendlyResult(_translations, GameResult.values[index])),
-                                  onTap: () { setState(() {_game.result = GameResult.values[index]; }); },
-                                )
-                              ]);
-                        }
-                    ),
+                    children: List<Widget>.generate(GameResult.values.length, (int index) {
+                      return Wrap(crossAxisAlignment: WrapCrossAlignment.center, children: <Widget>[
+                        Radio<GameResult>(
+                            value: GameResult.values[index],
+                            groupValue: _game.result,
+                            onChanged: (GameResult result) {
+                              setState(() {
+                                _game.result = GameResult.values[index];
+                              });
+                            }),
+                        GestureDetector(
+                          child: Text(getUserFriendlyResult(_translations, GameResult.values[index])),
+                          onTap: () {
+                            setState(() {
+                              _game.result = GameResult.values[index];
+                            });
+                          },
+                        )
+                      ]);
+                    }),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(2.0),
@@ -109,50 +109,45 @@ class _AddGamePageState extends State<AddGamePage> {
                     padding: const EdgeInsets.all(8.0),
                     child: Center(
                         child: Text(
-                          _translations.text("my_race"),
-                          style: TextStyle(fontSize: 16),
-                        )
-                    ),
+                      _translations.text("my_race"),
+                      style: TextStyle(fontSize: 16),
+                    )),
                   ),
                   Wrap(
-                    children: List<Widget>.generate(
-                        Race.values.length,
-                            (int index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: ChoiceChip(
-                              label: Text(getUserFriendlyRaceName(_translations, Race.values[index])),
-                              selected: _game.raceUsed == Race.values[index],
-                              onSelected: (bool selected) { _manageRaceUsed(Race.values[index]); },
-                            ),
-                          );
-                        }
-                    ),
+                    children: List<Widget>.generate(Race.values.length, (int index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: ChoiceChip(
+                          label: Text(getUserFriendlyRaceName(_translations, Race.values[index])),
+                          selected: _game.raceUsed == Race.values[index],
+                          onSelected: (bool selected) {
+                            _manageRaceUsed(Race.values[index]);
+                          },
+                        ),
+                      );
+                    }),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Center(
                         child: Text(
-                          _translations.text("opponents"),
-                          style: TextStyle(fontSize: 16),
-                        )
-                    ),
+                      _translations.text("opponents"),
+                      style: TextStyle(fontSize: 16),
+                    )),
                   ),
                   Wrap(
-                    children: List<Widget>.generate(
-                        Race.values.length,
-                        (int index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: ChoiceChip(
-                              label: Text(getUserFriendlyRaceName(_translations, Race.values[index])),
-                              selected: _game.opponents.contains(Race.values[index])
-                                  || _game.raceUsed == Race.values[index],
-                              onSelected: (bool selected) { _manageOpponents(Race.values[index]); },
-                            ),
-                          );
-                        }
-                    ),
+                    children: List<Widget>.generate(Race.values.length, (int index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: ChoiceChip(
+                          label: Text(getUserFriendlyRaceName(_translations, Race.values[index])),
+                          selected: _game.opponents.contains(Race.values[index]) || _game.raceUsed == Race.values[index],
+                          onSelected: (bool selected) {
+                            _manageOpponents(Race.values[index]);
+                          },
+                        ),
+                      );
+                    }),
                   )
                 ],
               ),
@@ -161,7 +156,9 @@ class _AddGamePageState extends State<AddGamePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {_saveGame(context, _game); },
+        onPressed: () {
+          _saveGame(context, _game);
+        },
         tooltip: Translations.of(context).text('add_new'),
         child: Icon(Icons.save),
       ),
@@ -180,7 +177,7 @@ class _AddGamePageState extends State<AddGamePage> {
     setState(() {
       if (_game.opponents.contains(_race)) {
         _game.opponents.remove(_race);
-      } else if (_game.raceUsed != _race){
+      } else if (_game.raceUsed != _race) {
         _game.opponents.add(_race);
       }
     });

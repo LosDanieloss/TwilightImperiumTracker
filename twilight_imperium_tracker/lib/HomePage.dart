@@ -10,7 +10,6 @@ import 'MyApp.dart';
 import 'Translations.dart';
 
 class HomePage extends StatefulWidget {
-
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -34,7 +33,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _onGameChanged(Event event) {
-    var old = _games.singleWhere((game) { return game.key == event.snapshot.key; });
+    var old = _games.singleWhere((game) {
+      return game.key == event.snapshot.key;
+    });
     setState(() {
       _games[_games.indexOf(old)] = Game.fromJson(Map<String, dynamic>.from(event.snapshot.value));
     });
@@ -56,8 +57,7 @@ class _HomePageState extends State<HomePage> {
           }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => AddGamePage()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => AddGamePage()));
         },
         tooltip: Translations.of(context).text('add_new'),
         child: Icon(Icons.add),
@@ -93,8 +93,7 @@ class _HomePageState extends State<HomePage> {
                     if (index == 0)
                       return Padding(
                         padding: const EdgeInsets.all(2.0),
-                        child: Text(
-                            "${Translations.of(context).text('opponents')}"),
+                        child: Text("${Translations.of(context).text('opponents')}"),
                       );
                     return Padding(
                       padding: const EdgeInsets.only(left: 12.0),
