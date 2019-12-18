@@ -1,11 +1,12 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-
-import 'Game.dart';
-import 'MyApp.dart';
-import 'Translations.dart';
+import 'package:twilight_imperium_tracker/App.dart';
+import 'package:twilight_imperium_tracker/Translations.dart';
+import 'package:twilight_imperium_tracker/feature/game/Game.dart';
 
 class AddGamePage extends StatefulWidget {
+
+  static const route = "/games/new";
 
   @override
   _AddGamePageState createState() => _AddGamePageState();

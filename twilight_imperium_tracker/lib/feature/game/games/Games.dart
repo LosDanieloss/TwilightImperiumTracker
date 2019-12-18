@@ -1,18 +1,19 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:twilight_imperium_tracker/App.dart';
+import 'package:twilight_imperium_tracker/Translations.dart';
+import 'package:twilight_imperium_tracker/feature/game/Game.dart';
+import 'package:twilight_imperium_tracker/feature/game/add_game/AddGamePage.dart';
+import 'package:twilight_imperium_tracker/feature/utils/Navigation.dart';
 
-import 'AddGamePage.dart';
-import 'Game.dart';
-import 'MyApp.dart';
-import 'Translations.dart';
-
-class HomePage extends StatefulWidget {
+class GamesPage extends StatefulWidget {
+  static const route = "/games";
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _GamesPageState createState() => _GamesPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _GamesPageState extends State<GamesPage> {
   var _games = <Game>[];
   DatabaseReference _gamesRef;
 
@@ -31,7 +32,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _onGameChanged(Event event) {
-    var old = _games.singleWhere((game) { return game.key == event.snapshot.key; });
+    var old = _games.singleWhere((game) {
+      return game.key == event.snapshot.key;
+    });
     setState(() {
       _games[_games.indexOf(old)] = Game.fromJson(Map<String, dynamic>.from(event.snapshot.value));
     });
@@ -52,10 +55,7 @@ class _HomePageState extends State<HomePage> {
             return _buildRow(context, _games[index]);
           }),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => AddGamePage()));
-        },
+        onPressed: () => pushReplacementNamed(context, AddGamePage.route),
         tooltip: Translations.of(context).text('add_new'),
         child: Icon(Icons.add),
       ),
@@ -78,7 +78,9 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding: const EdgeInsets.all(2.0),
                 child: Text(
-                  "${Translations.of(context).text('collected')} ${game.points} ${Translations.of(context).text('points')} ${Translations.of(context).text('goal_was')} ${game.goal}",
+                  "${Translations.of(context).text('collected')} "
+                      "${game.points} ${Translations.of(context).text('points')} "
+                      "${Translations.of(context).text('goal_was')} ${game.goal}",
                   textAlign: TextAlign.left,
                 ),
               ),
@@ -90,8 +92,7 @@ class _HomePageState extends State<HomePage> {
                     if (index == 0)
                       return Padding(
                         padding: const EdgeInsets.all(2.0),
-                        child: Text(
-                            "${Translations.of(context).text('opponents')}"),
+                        child: Text("${Translations.of(context).text('opponents')}"),
                       );
                     return Padding(
                       padding: const EdgeInsets.only(left: 12.0),

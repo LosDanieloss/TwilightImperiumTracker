@@ -1,6 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'Translations.dart';
+import 'package:twilight_imperium_tracker/Translations.dart';
 
 part 'Game.g.dart';
 
