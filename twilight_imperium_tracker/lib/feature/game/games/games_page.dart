@@ -42,7 +42,7 @@ class _GamesPageState extends State<GamesPage> {
               ),
               listener:  (context, state) {
                 if (state is AddNewGameBlocState) {
-                  pushReplacementNamed(context, AddGamePage.route);
+                  pushScreenNamed(context, AddGamePage.route);
                 }
               },
             );
