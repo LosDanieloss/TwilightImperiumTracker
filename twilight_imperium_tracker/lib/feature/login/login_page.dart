@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:twilight_imperium_tracker/Translations.dart';
-import 'package:twilight_imperium_tracker/feature/game/games/Games.dart';
+import 'package:twilight_imperium_tracker/feature/game/games/games_page.dart';
 import 'package:twilight_imperium_tracker/feature/login/bloc.dart';
 import 'package:twilight_imperium_tracker/feature/utils/Navigation.dart';
 

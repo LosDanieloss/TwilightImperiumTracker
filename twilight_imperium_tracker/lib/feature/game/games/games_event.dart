@@ -1,5 +1,14 @@
-import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 
-abstract class GamesEvent extends Equatable {
-  const GamesEvent();
-}
+@immutable
+abstract class GamesEvent {}
+
+class LoadGamesEvent extends GamesEvent {}
+
+class AddNewGameEvent extends GamesEvent {}
+
+class ChangeGameEvent extends GamesEvent {}
+
+class NewGameAddedEvent extends GamesEvent {}
+
+class GameChangedEvent extends GamesEvent {}

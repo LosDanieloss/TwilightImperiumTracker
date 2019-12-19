@@ -1,9 +1,9 @@
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:twilight_imperium_tracker/App.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:twilight_imperium_tracker/Translations.dart';
 import 'package:twilight_imperium_tracker/feature/game/Game.dart';
 import 'package:twilight_imperium_tracker/feature/game/add_game/AddGamePage.dart';
+import 'package:twilight_imperium_tracker/feature/game/games/bloc.dart';
 import 'package:twilight_imperium_tracker/feature/utils/Navigation.dart';
 
 class GamesPage extends StatefulWidget {
@@ -14,31 +14,7 @@ class GamesPage extends StatefulWidget {
 }
 
 class _GamesPageState extends State<GamesPage> {
-  var _games = <Game>[];
-  DatabaseReference _gamesRef;
-
-  @override
-  void initState() {
-    super.initState();
-    _gamesRef = FirebaseDatabase.instance.reference().child(user.uid).child("games");
-    _gamesRef.onChildAdded.listen(_onGameAdded);
-    _gamesRef.onChildChanged.listen(_onGameChanged);
-  }
-
-  void _onGameAdded(Event event) {
-    setState(() {
-      _games.add(Game.fromJson(Map<String, dynamic>.from(event.snapshot.value)));
-    });
-  }
-
-  void _onGameChanged(Event event) {
-    var old = _games.singleWhere((game) {
-      return game.key == event.snapshot.key;
-    });
-    setState(() {
-      _games[_games.indexOf(old)] = Game.fromJson(Map<String, dynamic>.from(event.snapshot.value));
-    });
-  }
+  final _bloc = GamesBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -48,14 +24,33 @@ class _GamesPageState extends State<GamesPage> {
         centerTitle: true,
         title: Text(Translations.of(context).text('home_page_title')),
       ),
-      body: ListView.builder(
-          itemCount: _games.length,
-          padding: EdgeInsets.all(8.0),
-          itemBuilder: (context, index) {
-            return _buildRow(context, _games[index]);
-          }),
+      body: BlocProvider(
+        create: (BuildContext context) => _bloc,
+        child: BlocBuilder(
+          bloc: _bloc,
+          builder: (context, state) {
+            final _games = state.games;
+            return BlocListener(
+              bloc: _bloc,
+              child: Center(
+                child: (_games == null) ? CircularProgressIndicator() :ListView.builder(
+                    itemCount: _games.length,
+                    padding: EdgeInsets.all(8.0),
+                    itemBuilder: (context, index) {
+                      return _buildRow(context, _games[index]);
+                    }),
+              ),
+              listener:  (context, state) {
+                if (state is AddNewGameBlocState) {
+                  pushReplacementNamed(context, AddGamePage.route);
+                }
+              },
+            );
+          }
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => pushReplacementNamed(context, AddGamePage.route),
+        onPressed: () => _bloc.add(AddNewGameEvent()),
         tooltip: Translations.of(context).text('add_new'),
         child: Icon(Icons.add),
       ),
@@ -114,5 +109,11 @@ class _GamesPageState extends State<GamesPage> {
         return Colors.grey;
     }
     return Colors.white;
+  }
+
+  @override
+  void dispose() {
+    _bloc.close();
+    super.dispose();
   }
 }

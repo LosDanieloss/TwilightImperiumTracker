@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:twilight_imperium_tracker/App.dart';
 import 'package:twilight_imperium_tracker/Translations.dart';
 import 'package:twilight_imperium_tracker/feature/game/Game.dart';
+import 'package:twilight_imperium_tracker/feature/utils/Navigation.dart';
 
 class AddGamePage extends StatefulWidget {
 
@@ -188,6 +189,6 @@ class _AddGamePageState extends State<AddGamePage> {
 
   void _saveGame(BuildContext context, Game game) {
     _gamesRef.push().set(_game.toJson());
-    Navigator.pop(context);
+    popScreen(context);
   }
 }

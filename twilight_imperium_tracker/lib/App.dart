@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:twilight_imperium_tracker/feature/game/add_game/AddGamePage.dart';
-import 'package:twilight_imperium_tracker/feature/game/games/Games.dart';
+import 'package:twilight_imperium_tracker/feature/game/games/games_page.dart';
 
 import 'Translations.dart';
 import 'feature/login/login_page.dart';
