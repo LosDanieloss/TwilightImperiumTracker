@@ -12,10 +12,8 @@ class Game {
   int goal;
   GameResult result;
   var opponents = <Race>[];
-  List<String> test = <String>["A", "B", "C"];
 
-
-  Game({ this.raceUsed, this.points, this.goal, this.result, this.opponents });
+  Game({this.raceUsed, this.points, this.goal, this.result, this.opponents});
 
   factory Game.fromJson(Map<String, dynamic> json) => _$GameFromJson(json);
   Map<String, dynamic> toJson() => _$GameToJson(this);
@@ -27,6 +25,15 @@ class Game {
         goal = snapshot.value["goal"],
         result = GameResult.values[snapshot.value["result"]],
         opponents = snapshot.value["opponents"];
+
+  Game copy({raceUsed, points, goal, result, opponents}) =>
+      Game(
+        raceUsed: raceUsed ?? this.raceUsed,
+        points: points ?? this.points,
+        goal: goal ?? this.points,
+        result: result ?? this.result,
+        opponents: opponents ?? this.opponents
+      );
 }
 
 enum Race {

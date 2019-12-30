@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:twilight_imperium_tracker/Translations.dart';
 import 'package:twilight_imperium_tracker/feature/game/Game.dart';
-import 'package:twilight_imperium_tracker/feature/game/add_game/AddGamePage.dart';
+import 'package:twilight_imperium_tracker/feature/game/add_game/add_game_page.dart';
 import 'package:twilight_imperium_tracker/feature/game/games/bloc.dart';
 import 'package:twilight_imperium_tracker/feature/utils/Navigation.dart';
 
