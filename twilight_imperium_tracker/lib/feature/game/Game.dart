@@ -16,6 +16,7 @@ class Game {
   Game({this.raceUsed, this.points, this.goal, this.result, this.opponents});
 
   factory Game.fromJson(Map<String, dynamic> json) => _$GameFromJson(json);
+
   Map<String, dynamic> toJson() => _$GameToJson(this);
 
   Game.fromSnapshot(DataSnapshot snapshot)
@@ -56,14 +57,10 @@ enum Race {
   XXCHA_KINGDOM,
 }
 
-enum GameResult {
-  WIN,
-  LOSE,
-  DRAW
-}
+enum GameResult { WIN, LOSE, DRAW }
 
 String getUserFriendlyRaceName(Translations translations, Race race) {
-  switch(race) {
+  switch (race) {
     case Race.ARBOREC:
       return translations.text('arborec');
     case Race.EMBERS_OF_MUAAT:
@@ -103,7 +100,7 @@ String getUserFriendlyRaceName(Translations translations, Race race) {
 }
 
 String getUserFriendlyResult(Translations translations, GameResult result) {
-  switch(result) {
+  switch (result) {
     case GameResult.WIN:
       return translations.text('win');
     case GameResult.DRAW:
