@@ -10,7 +10,6 @@ import 'package:twilight_imperium_tracker/feature/game/add_game/add_game_state.d
 import 'package:twilight_imperium_tracker/feature/utils/Navigation.dart';
 
 class AddGamePage extends StatefulWidget {
-
   static const route = "/games/new";
 
   @override
@@ -35,21 +34,22 @@ class _AddGamePageState extends State<AddGamePage> {
           child: Card(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: BlocBuilder(
+              child: BlocListener(
                 bloc: _bloc,
-                builder: (context, state) {
-                  if (state is GameAdded) {
-                    popScreen(context);
-                    return Container();
-                  }
-                  return Column(
-                      children: _buildResult(state.game.result, _translations)
-                          ..add(_buildCollectedPoints(state.game.points, _translations))
-                          ..add(_buildGoalPoints(state.game.goal, _translations))
-                          ..addAll(_buildRaceUsed(state.game.raceUsed, _translations))
-                          ..addAll(_buildOpponentsRace(state.game.raceUsed, state.game.opponents, _translations))
-                  );
-                },
+                child: BlocBuilder(
+                  bloc: _bloc,
+                  builder: (context, state) {
+                    if (state is GameAdded) { return Container(); }
+                    return Column(
+                        children: _buildResult(state.game.result, _translations)
+                            ..add(_buildCollectedPoints(state.game.points, _translations))
+                            ..add(_buildGoalPoints(state.game.goal, _translations))
+                            ..addAll(_buildRaceUsed(state.game.raceUsed, _translations))
+                            ..addAll(_buildOpponentsRace(state.game.raceUsed, state.game.opponents, _translations))
+                    );
+                  },
+                ),
+                listener: (context, state) { if (state is GameAdded) { popScreen(context); }},
               ),
             ),
           ),
