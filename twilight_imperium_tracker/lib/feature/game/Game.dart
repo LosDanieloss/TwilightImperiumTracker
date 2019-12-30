@@ -1,6 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'Translations.dart';
+import 'package:twilight_imperium_tracker/Translations.dart';
 
 part 'Game.g.dart';
 
@@ -12,7 +12,6 @@ class Game {
   int goal;
   GameResult result;
   var opponents = <Race>[];
-  List<String> test = <String>["A", "B", "C"];
 
   Game({this.raceUsed, this.points, this.goal, this.result, this.opponents});
 
@@ -27,6 +26,15 @@ class Game {
         goal = snapshot.value["goal"],
         result = GameResult.values[snapshot.value["result"]],
         opponents = snapshot.value["opponents"];
+
+  Game copy({raceUsed, points, goal, result, opponents}) =>
+      Game(
+        raceUsed: raceUsed ?? this.raceUsed,
+        points: points ?? this.points,
+        goal: goal ?? this.points,
+        result: result ?? this.result,
+        opponents: opponents ?? this.opponents
+      );
 }
 
 enum Race {

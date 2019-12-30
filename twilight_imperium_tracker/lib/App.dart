@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
-import 'LoginPage.dart';
+import 'package:twilight_imperium_tracker/feature/game/add_game/add_game_page.dart';
+import 'package:twilight_imperium_tracker/feature/game/games/games_page.dart';
 import 'Translations.dart';
+import 'feature/login/login_page.dart';
 
 FirebaseUser user;
 
@@ -29,7 +30,12 @@ class MyApp extends StatelessWidget {
         const Locale('en', ''),
         const Locale('pl', ''),
       ],
-      home: Center(child: LoginPage()),
+      initialRoute: LoginPage.route,
+      routes: {
+        LoginPage.route: (_) => LoginPage(),
+        GamesPage.route: (_) => GamesPage(),
+        AddGamePage.route: (_) => AddGamePage(),
+      },
     );
   }
 }

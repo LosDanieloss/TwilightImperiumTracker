@@ -1,45 +1,20 @@
-import 'dart:convert';
-
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:twilight_imperium_tracker/Translations.dart';
+import 'package:twilight_imperium_tracker/feature/game/Game.dart';
+import 'package:twilight_imperium_tracker/feature/game/add_game/add_game_page.dart';
+import 'package:twilight_imperium_tracker/feature/game/games/bloc.dart';
+import 'package:twilight_imperium_tracker/feature/utils/Navigation.dart';
 
-import 'AddGamePage.dart';
-import 'Game.dart';
-import 'MyApp.dart';
-import 'Translations.dart';
+class GamesPage extends StatefulWidget {
+  static const route = "/games";
 
-class HomePage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _GamesPageState createState() => _GamesPageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  var _games = <Game>[];
-  DatabaseReference _gamesRef;
-
-  @override
-  void initState() {
-    super.initState();
-    _gamesRef = FirebaseDatabase.instance.reference().child(user.uid).child("games");
-    _gamesRef.onChildAdded.listen(_onGameAdded);
-    _gamesRef.onChildChanged.listen(_onGameChanged);
-  }
-
-  void _onGameAdded(Event event) {
-    setState(() {
-      _games.add(Game.fromJson(Map<String, dynamic>.from(event.snapshot.value)));
-    });
-  }
-
-  void _onGameChanged(Event event) {
-    var old = _games.singleWhere((game) {
-      return game.key == event.snapshot.key;
-    });
-    setState(() {
-      _games[_games.indexOf(old)] = Game.fromJson(Map<String, dynamic>.from(event.snapshot.value));
-    });
-  }
+class _GamesPageState extends State<GamesPage> {
+  final _bloc = GamesBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -49,16 +24,33 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         title: Text(Translations.of(context).text('home_page_title')),
       ),
-      body: ListView.builder(
-          itemCount: _games.length,
-          padding: EdgeInsets.all(8.0),
-          itemBuilder: (context, index) {
-            return _buildRow(context, _games[index]);
-          }),
+      body: BlocProvider(
+        create: (BuildContext context) => _bloc,
+        child: BlocBuilder(
+          bloc: _bloc,
+          builder: (context, state) {
+            final _games = state.games;
+            return BlocListener(
+              bloc: _bloc,
+              child: Center(
+                child: (_games == null) ? CircularProgressIndicator() :ListView.builder(
+                    itemCount: _games.length,
+                    padding: EdgeInsets.all(8.0),
+                    itemBuilder: (context, index) {
+                      return _buildRow(context, _games[index]);
+                    }),
+              ),
+              listener:  (context, state) {
+                if (state is AddNewGameBlocState) {
+                  pushScreenNamed(context, AddGamePage.route);
+                }
+              },
+            );
+          }
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => AddGamePage()));
-        },
+        onPressed: () => _bloc.add(AddNewGameEvent()),
         tooltip: Translations.of(context).text('add_new'),
         child: Icon(Icons.add),
       ),
@@ -81,7 +73,9 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding: const EdgeInsets.all(2.0),
                 child: Text(
-                  "${Translations.of(context).text('collected')} ${game.points} ${Translations.of(context).text('points')} ${Translations.of(context).text('goal_was')} ${game.goal}",
+                  "${Translations.of(context).text('collected')} "
+                      "${game.points} ${Translations.of(context).text('points')} "
+                      "${Translations.of(context).text('goal_was')} ${game.goal}",
                   textAlign: TextAlign.left,
                 ),
               ),
@@ -115,5 +109,11 @@ class _HomePageState extends State<HomePage> {
         return Colors.grey;
     }
     return Colors.white;
+  }
+
+  @override
+  void dispose() {
+    _bloc.close();
+    super.dispose();
   }
 }
