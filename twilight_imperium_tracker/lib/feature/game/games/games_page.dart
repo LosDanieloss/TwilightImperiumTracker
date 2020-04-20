@@ -28,27 +28,29 @@ class _GamesPageState extends State<GamesPage> {
       body: BlocProvider(
         create: (BuildContext context) => _bloc,
         child: BlocBuilder(
-          bloc: _bloc,
-          builder: (context, state) {
-            final _games = state.games;
-            return BlocListener(
-              bloc: _bloc,
-              child: Center(
-                child: (_games == null) ? CircularProgressIndicator() :ListView.builder(
-                    itemCount: _games.length,
-                    padding: EdgeInsets.all(8.0),
-                    itemBuilder: (context, index) {
-                      return _buildRow(context, _games[index]);
-                    }),
-              ),
-              listener:  (context, state) {
-                if (state is AddNewGameBlocState) {
-                  pushScreenNamed(context, AddGamePage.route);
-                }
-              },
-            );
-          }
-        ),
+            bloc: _bloc,
+            builder: (context, state) {
+              final _games = state.games;
+              return BlocListener(
+                bloc: _bloc,
+                child: Center(
+                  child: (_games == null)
+                      ? CircularProgressIndicator()
+                      : ListView.separated(
+                          itemCount: _games.length,
+                          padding: EdgeInsets.all(8.0),
+                          separatorBuilder: (context, index) => Divider(
+                                color: Colors.grey,
+                              ),
+                          itemBuilder: (context, index) => _buildRow(context, _games[index])),
+                ),
+                listener: (context, state) {
+                  if (state is AddNewGameBlocState) {
+                    pushScreenNamed(context, AddGamePage.route);
+                  }
+                },
+              );
+            }),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _bloc.add(AddNewGameEvent()),
@@ -60,45 +62,43 @@ class _GamesPageState extends State<GamesPage> {
 
   Widget _buildRow(BuildContext context, Game game) {
     return InkWell(
-      child: Card(
-          color: _cardColor(game.result),
-          elevation: 4,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: Text(getUserFriendlyRaceName(Translations.of(context), game.raceUsed)),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: Text(
-                    "${Translations.of(context).text('collected')} "
-                        "${game.points} ${Translations.of(context).text('points')} "
-                        "${Translations.of(context).text('goal_was')} ${game.goal}",
-                    textAlign: TextAlign.left,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            getResultIcon(game.result),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: Text(
+                      getUserFriendlyRaceName(Translations.of(context), game.raceUsed),
+                      style: Theme.of(context).textTheme.subtitle1,
+                    ),
                   ),
-                ),
-                ListView.builder(
-                    shrinkWrap: true,
-                    physics: ClampingScrollPhysics(),
-                    itemCount: game.opponents.length + 1,
-                    itemBuilder: (context, index) {
-                      if (index == 0)
-                        return Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: Text("${Translations.of(context).text('opponents')}"),
-                        );
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 12.0),
-                        child: Text("* ${getUserFriendlyRaceName(Translations.of(context), game.opponents[index - 1])}"),
-                      );
-                    })
-              ],
+                  Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: Text(
+                      "Placeholder date: 26.10.2019", /* TODO date to game object */
+                      style: TextStyle(color: Colors.grey),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          )
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(
+                Icons.keyboard_arrow_right,
+                color: Colors.grey,
+              ),
+            ),
+          ],
+        ),
       ),
       onTap: () {
         pushScreenNamed(context, GameDetails.route, arguments: GameDetailsArguments(game: game));

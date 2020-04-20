@@ -8,7 +8,7 @@ import 'package:twilight_imperium_tracker/feature/utils/Navigation.dart';
 class GameDetailsArguments {
   final Game game;
 
-  GameDetailsArguments({ @required this.game });
+  GameDetailsArguments({@required this.game});
 }
 
 class GameDetails extends StatelessWidget {
@@ -25,63 +25,68 @@ class GameDetails extends StatelessWidget {
       appBar: AppBar(
         elevation: 8,
         centerTitle: true,
-        title: Text(translations.text('home_page_title')),),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: BlocListener(
-            bloc: _bloc..add(StoreGameDetailsEvent(game: game)),
-            child: BlocBuilder(
-              bloc: _bloc,
-              builder: (context, state) {
-                if (state is InitialGameDetailsState) { return Container(); }
-                if (state is LoadedGameDetailsState) {
-                  return Card(
-                      color: _cardColor(game.result),
-                      elevation: 4,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: Text(getUserFriendlyRaceName(translations, game.raceUsed)),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: Text(
-                                "${translations.text('collected')} "
-                                    "${game.points} ${translations.text('points')} "
-                                    "${translations.text('goal_was')} ${game.goal}",
-                                textAlign: TextAlign.left,
-                              ),
-                            ),
-                            ListView.builder(
-                                shrinkWrap: true,
-                                physics: ClampingScrollPhysics(),
-                                itemCount: game.opponents.length + 1,
-                                itemBuilder: (context, index) {
-                                  if (index == 0)
-                                    return Padding(
-                                      padding: const EdgeInsets.all(2.0),
-                                      child: Text("${translations.text('opponents')}"),
-                                    );
-                                  return Padding(
-                                    padding: const EdgeInsets.only(left: 12.0),
-                                    child: Text("* ${getUserFriendlyRaceName(translations, game.opponents[index - 1])}"),
-                                  );
-                                })
-                          ],
+        title: Text(translations.text('home_page_title')),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: BlocListener(
+          bloc: _bloc..add(StoreGameDetailsEvent(game: game)),
+          child: BlocBuilder(
+            bloc: _bloc,
+            builder: (context, state) {
+              if (state is InitialGameDetailsState) {
+                return Container();
+              }
+              if (state is LoadedGameDetailsState) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: Text(
+                          "${translations.text('my_race')}"
+                          "${getUserFriendlyRaceName(translations, game.raceUsed)}",
+                          style: Theme.of(context).textTheme.headline6,
                         ),
-                      )
-                  );
-                }
-                return SizedBox.shrink();
-              },
-            ),
-            listener: (context, state) { if (state is CloseState) { popScreen(context); } },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: Text(
+                          "${translations.text('collected')} "
+                          "${game.points} ${translations.text('points')} "
+                          "${translations.text('goal_was')} ${game.goal}",
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      ListView.builder(
+                          shrinkWrap: true,
+                          physics: ClampingScrollPhysics(),
+                          itemCount: game.opponents.length + 1,
+                          itemBuilder: (context, index) {
+                            if (index == 0)
+                              return Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: Text("${translations.text('opponents')}"),
+                              );
+                            return Padding(
+                              padding: const EdgeInsets.only(left: 12.0),
+                              child: Text("* ${getUserFriendlyRaceName(translations, game.opponents[index - 1])}"),
+                            );
+                          })
+                    ],
+                  ),
+                );
+              }
+              return SizedBox.shrink();
+            },
           ),
+          listener: (context, state) {
+            if (state is CloseState) {
+              popScreen(context);
+            }
+          },
         ),
       ),
     );
@@ -98,5 +103,4 @@ class GameDetails extends StatelessWidget {
     }
     return Colors.white;
   }
-
 }

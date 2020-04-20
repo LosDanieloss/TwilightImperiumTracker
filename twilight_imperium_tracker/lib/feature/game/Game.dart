@@ -1,4 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:twilight_imperium_tracker/Translations.dart';
 
@@ -109,4 +110,32 @@ String getUserFriendlyResult(Translations translations, GameResult result) {
       return translations.text('lose');
   }
   return "";
+}
+
+Widget getResultIcon(GameResult result) {
+  Widget icon;
+  switch(result) {
+    case GameResult.WIN:
+      icon = Icon(
+        Icons.grade,
+        color: Colors.amber,
+      );
+      break;
+    case GameResult.DRAW:
+      icon = Icon(
+        Icons.hourglass_empty,
+        color: Colors.lightBlue,
+      );
+      break;
+    case GameResult.LOSE:
+      icon = Icon(
+        Icons.close,
+        color: Colors.transparent,
+      );
+      break;
+  }
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: icon,
+  );
 }
