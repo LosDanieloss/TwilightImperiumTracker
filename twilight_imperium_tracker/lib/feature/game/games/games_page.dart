@@ -6,6 +6,7 @@ import 'package:twilight_imperium_tracker/feature/game/add_game/add_game_page.da
 import 'package:twilight_imperium_tracker/feature/game/game_details/game_details_page.dart';
 import 'package:twilight_imperium_tracker/feature/game/games/bloc.dart';
 import 'package:twilight_imperium_tracker/feature/utils/Navigation.dart';
+import 'package:intl/intl.dart';
 
 class GamesPage extends StatefulWidget {
   static const route = "/games";
@@ -16,6 +17,7 @@ class GamesPage extends StatefulWidget {
 
 class _GamesPageState extends State<GamesPage> {
   final _bloc = GamesBloc();
+  final _datePattern = "dd.MM.yyyy";
 
   @override
   Widget build(BuildContext context) {
@@ -67,36 +69,8 @@ class _GamesPageState extends State<GamesPage> {
         child: Row(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            getResultIcon(game.result),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: Text(
-                      getUserFriendlyRaceName(Translations.of(context), game.raceUsed),
-                      style: Theme.of(context).textTheme.subtitle1,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: Text(
-                      "Placeholder date: 26.10.2019", /* TODO date to game object */
-                      style: TextStyle(color: Colors.grey),
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Icon(
-                Icons.keyboard_arrow_right,
-                color: Colors.grey,
-              ),
-            ),
+            _buildGameIcon(game.result),
+            _buildGameInfo(game),
           ],
         ),
       ),
@@ -106,16 +80,47 @@ class _GamesPageState extends State<GamesPage> {
     );
   }
 
-  Color _cardColor(GameResult result) {
-    switch (result) {
-      case GameResult.WIN:
-        return Colors.lightGreenAccent;
-      case GameResult.LOSE:
-        return Colors.redAccent;
-      case GameResult.DRAW:
-        return Colors.grey;
-    }
-    return Colors.white;
+  Widget _buildGameIcon(GameResult result) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Icon(
+        getResultIcon(result),
+        color: getResultIconColor(result),
+      ),
+    );
+  }
+
+  Widget _buildGameInfo(Game game) {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          _buildRaceUsed(game.raceUsed),
+          _buildDate(DateTime.now()), /* TODO date to game object */
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRaceUsed(Race raceUsed) {
+    return Padding(
+      padding: const EdgeInsets.all(2.0),
+      child: Text(
+        "${getUserFriendlyRaceName(Translations.of(context), raceUsed)}",
+        style: Theme.of(context).textTheme.subtitle1,
+      ),
+    );
+  }
+
+  Widget _buildDate(DateTime date) {
+    return Padding(
+      padding: const EdgeInsets.all(2.0),
+      child: Text(
+        "${DateFormat(_datePattern).format(date.toLocal())}",
+        style: TextStyle(color: Colors.grey),
+        textAlign: TextAlign.left,
+      ),
+    );
   }
 
   @override

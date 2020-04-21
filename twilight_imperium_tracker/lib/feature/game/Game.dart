@@ -112,30 +112,24 @@ String getUserFriendlyResult(Translations translations, GameResult result) {
   return "";
 }
 
-Widget getResultIcon(GameResult result) {
-  Widget icon;
+IconData getResultIcon(GameResult result) {
   switch(result) {
     case GameResult.WIN:
-      icon = Icon(
-        Icons.grade,
-        color: Colors.amber,
-      );
-      break;
+      return Icons.star;
     case GameResult.DRAW:
-      icon = Icon(
-        Icons.hourglass_empty,
-        color: Colors.lightBlue,
-      );
-      break;
+      return Icons.star_half;
     case GameResult.LOSE:
-      icon = Icon(
-        Icons.close,
-        color: Colors.transparent,
-      );
-      break;
+      return Icons.star_border;
   }
-  return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: icon,
-  );
+}
+
+Color getResultIconColor(GameResult result) {
+  switch(result) {
+    case GameResult.WIN:
+      return Colors.amber;
+    case GameResult.DRAW:
+      return Colors.grey;
+    case GameResult.LOSE:
+      return Colors.red;
+  }
 }
