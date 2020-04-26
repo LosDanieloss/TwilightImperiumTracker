@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:twilight_imperium_tracker/Translations.dart';
 import 'package:twilight_imperium_tracker/feature/game/Game.dart';
@@ -40,12 +41,9 @@ class _GamesPageState extends State<GamesPage> {
                 child: Center(
                   child: (_games == null)
                       ? CircularProgressIndicator()
-                      : ListView.separated(
+                      : ListView.builder(
                           itemCount: _games.length,
                           padding: EdgeInsets.all(8.0),
-                          separatorBuilder: (context, index) => Divider(
-                                color: Colors.grey,
-                              ),
                           itemBuilder: (context, index) => _buildRow(context, _games[index])),
                 ),
                 listener: (context, state) {
@@ -65,20 +63,30 @@ class _GamesPageState extends State<GamesPage> {
   }
 
   Widget _buildRow(BuildContext context, Game game) {
-    return InkWell(
+    return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
+        child: Column(
           children: <Widget>[
-            _buildGameIcon(game.result),
-            _buildGameInfo(game),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                _buildGameIcon(game.result),
+                _buildGameInfo(game),
+              ],
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                _buildViewDetails(context: context, game: game),
+                Spacer(),
+                _buildEdit(context: context, game: game),
+                _buildDelete(context: context, game: game),
+              ],
+            )
           ],
         ),
       ),
-      onTap: () {
-        pushScreenNamed(context, GameDetails.route, arguments: GameDetailsArguments(game: game));
-      },
     );
   }
 
@@ -122,6 +130,49 @@ class _GamesPageState extends State<GamesPage> {
         style: TextStyle(color: Colors.grey),
         textAlign: TextAlign.left,
       ),
+    );
+  }
+
+  Widget _buildViewDetails({@required BuildContext context, @required Game game}) {
+    final translations = Translations.of(context);
+    return FlatButton(
+      textColor: Theme.of(context).accentColor,
+      onPressed: () {
+        pushScreenNamed(context, GameDetails.route, arguments: GameDetailsArguments(game: game));
+      },
+      child: Text("View details"),
+    );
+  }
+
+  Widget _buildEdit({@required BuildContext context, @required Game game}) {
+    return IconButton(
+      iconSize: 20,
+      color: Colors.grey,
+      icon: Icon(Icons.edit),
+      onPressed: () {
+        /* TODO move user to edit*/
+        Fluttertoast.showToast(
+          msg: "Not implemented",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+        );
+      },
+    );
+  }
+
+  Widget _buildDelete({@required BuildContext context, @required Game game}) {
+    return IconButton(
+      iconSize: 20,
+      color: Colors.grey,
+      icon: Icon(Icons.delete),
+      onPressed: () {
+        /* TODO show dialog asking if user is sure */
+        Fluttertoast.showToast(
+          msg: "Not implemented",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+        );
+      },
     );
   }
 

@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
       title: 'TI4 Tracker',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        accentColor: Colors.blueAccent,
       ),
       localizationsDelegates: [
         const TranslationsDelegate(),
