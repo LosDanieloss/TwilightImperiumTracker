@@ -71,7 +71,7 @@ class _GamesPageState extends State<GamesPage> {
             Row(
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                _buildGameIcon(game.result),
+                _buildGameResultIcon(game.result),
                 _buildGameInfo(game),
               ],
             ),
@@ -90,7 +90,7 @@ class _GamesPageState extends State<GamesPage> {
     );
   }
 
-  Widget _buildGameIcon(GameResult result) {
+  Widget _buildGameResultIcon(GameResult result) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Icon(
@@ -140,7 +140,7 @@ class _GamesPageState extends State<GamesPage> {
       onPressed: () {
         pushScreenNamed(context, GameDetails.route, arguments: GameDetailsArguments(game: game));
       },
-      child: Text("View details"),
+      child: Text(translations.text('view_details')),
     );
   }
 
@@ -154,7 +154,7 @@ class _GamesPageState extends State<GamesPage> {
         Fluttertoast.showToast(
           msg: "Not implemented",
           toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
+          gravity: ToastGravity.BOTTOM,
         );
       },
     );
