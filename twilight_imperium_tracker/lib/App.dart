@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:twilight_imperium_tracker/feature/game/add_game/add_game_page.dart';
+import 'package:twilight_imperium_tracker/feature/game/game_details/game_details_page.dart';
 import 'package:twilight_imperium_tracker/feature/game/games/games_page.dart';
 import 'Translations.dart';
 import 'feature/login/login_page.dart';
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
       title: 'TI4 Tracker',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        accentColor: Colors.blueAccent,
       ),
       localizationsDelegates: [
         const TranslationsDelegate(),
@@ -35,6 +37,7 @@ class MyApp extends StatelessWidget {
         LoginPage.route: (_) => LoginPage(),
         GamesPage.route: (_) => GamesPage(),
         AddGamePage.route: (_) => AddGamePage(),
+        GameDetails.route: (_) => GameDetails(),
       },
     );
   }

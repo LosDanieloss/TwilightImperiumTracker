@@ -1,4 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:twilight_imperium_tracker/Translations.dart';
 
@@ -27,14 +28,12 @@ class Game {
         result = GameResult.values[snapshot.value["result"]],
         opponents = snapshot.value["opponents"];
 
-  Game copy({raceUsed, points, goal, result, opponents}) =>
-      Game(
-        raceUsed: raceUsed ?? this.raceUsed,
-        points: points ?? this.points,
-        goal: goal ?? this.points,
-        result: result ?? this.result,
-        opponents: opponents ?? this.opponents
-      );
+  Game copy({raceUsed, points, goal, result, opponents}) => Game(
+      raceUsed: raceUsed ?? this.raceUsed,
+      points: points ?? this.points,
+      goal: goal ?? this.points,
+      result: result ?? this.result,
+      opponents: opponents ?? this.opponents);
 }
 
 enum Race {
@@ -58,55 +57,3 @@ enum Race {
 }
 
 enum GameResult { WIN, LOSE, DRAW }
-
-String getUserFriendlyRaceName(Translations translations, Race race) {
-  switch (race) {
-    case Race.ARBOREC:
-      return translations.text('arborec');
-    case Race.EMBERS_OF_MUAAT:
-      return translations.text('embers_of_muaat');
-    case Race.GHOSTS_OF_CREUSS:
-      return translations.text('ghosts_of_creuss');
-    case Race.NAALU_COLLECTIVE:
-      return translations.text('naalu_collective');
-    case Race.UNIVERSITIES_OF_JOL_NAR:
-      return translations.text('universities_of_jol_nar');
-    case Race.YIN_BROTHERHOOD:
-      return translations.text('yin_brotherhood');
-    case Race.BARONY_OF_LETNEV:
-      return translations.text('barony_of_letnev');
-    case Race.EMIRATES_OF_HACAN:
-      return translations.text('emirates_of_hacan');
-    case Race.L1Z1X_MINDNET:
-      return translations.text('l1z1x_mindnet');
-    case Race.NEKRO_VIRUS:
-      return translations.text('nekro_virus');
-    case Race.WINNU:
-      return translations.text('winnu');
-    case Race.YSSARIL_TRIBES:
-      return translations.text('yssaril_tribes');
-    case Race.CLAN_OF_SAAR:
-      return translations.text('clan_of_saar');
-    case Race.FEDERATION_OF_SOL:
-      return translations.text('federation_of_sol');
-    case Race.Mentak_Coalition:
-      return translations.text('mentak_coalition');
-    case Race.SARDAKK_N_ORR:
-      return translations.text('sardakk_n_orr');
-    case Race.XXCHA_KINGDOM:
-      return translations.text('xxcha_kingdom');
-  }
-  return "";
-}
-
-String getUserFriendlyResult(Translations translations, GameResult result) {
-  switch (result) {
-    case GameResult.WIN:
-      return translations.text('win');
-    case GameResult.DRAW:
-      return translations.text('draw');
-    case GameResult.LOSE:
-      return translations.text('lose');
-  }
-  return "";
-}
