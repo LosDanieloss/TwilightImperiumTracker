@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:twilight_imperium_tracker/Translations.dart';
 import 'package:twilight_imperium_tracker/feature/game/Game.dart';
+import 'package:twilight_imperium_tracker/feature/game/GameResultExtension.dart';
+import 'package:twilight_imperium_tracker/feature/game/RaceExtension.dart';
 import 'package:twilight_imperium_tracker/feature/game/add_game/add_game_page.dart';
 import 'package:twilight_imperium_tracker/feature/game/game_details/game_details_page.dart';
 import 'package:twilight_imperium_tracker/feature/game/games/bloc.dart';
 import 'package:twilight_imperium_tracker/feature/utils/Navigation.dart';
-import 'package:intl/intl.dart';
 
 class GamesPage extends StatefulWidget {
   static const route = "/games";
@@ -84,8 +86,8 @@ class _GamesPageState extends State<GamesPage> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Icon(
-        getResultIcon(result),
-        color: getResultIconColor(result),
+        result.getResultIcon(),
+        color: result.getResultIconColor(),
       ),
     );
   }
@@ -106,8 +108,8 @@ class _GamesPageState extends State<GamesPage> {
     return Padding(
       padding: const EdgeInsets.all(2.0),
       child: Text(
-        "${getUserFriendlyRaceName(Translations.of(context), raceUsed)}",
-        style: Theme.of(context).textTheme.subtitle1,
+        raceUsed.getUserFriendlyRaceName(Translations.of(context)),
+        style: Theme.of(context).textTheme.subhead,
       ),
     );
   }

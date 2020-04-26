@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:twilight_imperium_tracker/Translations.dart';
 import 'package:twilight_imperium_tracker/feature/game/Game.dart';
+import 'package:twilight_imperium_tracker/feature/game/GameResultExtension.dart';
+import 'package:twilight_imperium_tracker/feature/game/RaceExtension.dart';
 import 'package:twilight_imperium_tracker/feature/game/game_details/bloc.dart';
 import 'package:twilight_imperium_tracker/feature/utils/Navigation.dart';
 
@@ -28,7 +30,7 @@ class GameDetails extends StatelessWidget {
         title: Text(translations.text('home_page_title')),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0,),
         child: BlocListener(
           bloc: _bloc..add(StoreGameDetailsEvent(game: game)),
           child: BlocBuilder(
@@ -38,15 +40,16 @@ class GameDetails extends StatelessWidget {
                 return Container();
               }
               if (state is LoadedGameDetailsState) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
+                return SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: _buildResultIcon(context: context, result: game.result)
+                    children: _buildResultIcon(context: context, result: game.result, translations: translations)
                       ..addAll([
                         _buildRace(context: context, translations: translations, raceUsed: game.raceUsed),
                         _buildCollectedPoints(
                             translations: translations, collectedPoints: game.points, goal: game.goal),
+                        _buildRacesInPlayHeader(context: context, translations: translations),
+                        _buildRaceBanner(context: context, translations: translations, race: game.raceUsed),
                         _buildOpponents(translations: translations, opponents: game.opponents),
                       ]),
                   ),
@@ -65,29 +68,18 @@ class GameDetails extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildResultIcon({@required BuildContext context, @required GameResult result}) {
+  List<Widget> _buildResultIcon({@required BuildContext context, @required GameResult result, @required Translations translations}) {
     return [
       Icon(
-        getResultIcon(result),
-        color: getResultIconColor(result),
+        result.getResultIcon(),
+        color: result.getResultIconColor(),
         size: 128,
       ),
       Text(
-        _resultRationale(result: result),
-        style: Theme.of(context).textTheme.bodyText1,
+        result.resultRationale(translations),
+        style: Theme.of(context).textTheme.body1,
       )
     ];
-  }
-
-  String _resultRationale({@required GameResult result}) {
-    switch (result) {
-      case GameResult.WIN:
-        return "Congratulation! You have won.";
-      case GameResult.DRAW:
-        return "Not bad. It's a draw.";
-      case GameResult.LOSE:
-        return "Better luck next time.";
-    }
   }
 
   Widget _buildRace({@required BuildContext context, @required Translations translations, @required Race raceUsed}) {
@@ -95,8 +87,8 @@ class GameDetails extends StatelessWidget {
       padding: const EdgeInsets.all(2.0),
       child: Text(
         "${translations.text('my_race')}"
-        "${getUserFriendlyRaceName(translations, raceUsed)}",
-        style: Theme.of(context).textTheme.headline6,
+        "${raceUsed.getUserFriendlyRaceName(translations)}",
+        style: Theme.of(context).textTheme.headline,
       ),
     );
   }
@@ -114,21 +106,59 @@ class GameDetails extends StatelessWidget {
     );
   }
 
+  Widget _buildRacesInPlayHeader({@required BuildContext context, @required Translations translations}) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
+      child: Text(translations.text('race_used_game'), style: Theme.of(context).textTheme.subhead.merge(TextStyle(fontSize: 20))),
+    );
+  }
+
+  Widget _buildRaceBanner({@required BuildContext context, @required Translations translations, @required Race race}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: ClipRRect(
+          borderRadius: BorderRadius.circular(16.0),
+          child: Stack(
+            children: <Widget>[
+              race.getRaceImageBanner(),
+              _buildRaceText(context: context, translations: translations, race: race),
+            ],
+          )),
+    );
+  }
+
+  Widget _buildRaceText({@required BuildContext context, @required Translations translations, @required Race race}) {
+    return Positioned(
+      bottom: 0.0,
+      left: 0.0,
+      right: 0.0,
+      child: Container(
+        color: Colors.black54,
+        child: Row(
+          children: <Widget>[
+            Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text(
+                    race.getUserFriendlyRaceName(translations),
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.subhead.merge(TextStyle(color: Colors.white)),
+                  ),
+                )),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildOpponents({@required Translations translations, @required List<Race> opponents}) {
     return ListView.builder(
         shrinkWrap: true,
         physics: ClampingScrollPhysics(),
-        itemCount: opponents.length + 1,
+        itemCount: opponents.length,
         itemBuilder: (context, index) {
-          if (index == 0)
-            return Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Text("${translations.text('opponents')}"),
-            );
-          return Padding(
-            padding: const EdgeInsets.only(left: 12.0),
-            child: Text("* ${getUserFriendlyRaceName(translations, opponents[index - 1])}"),
-          );
+          final race = opponents[index];
+          return _buildRaceBanner(context: context, translations: translations, race: race);
         });
   }
 }

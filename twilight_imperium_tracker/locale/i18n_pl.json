@@ -31,5 +31,11 @@
   "federation_of_sol": "Federacja Sol",
   "mentak_coalition": "Koalicja Mentaka",
   "sardakk_n_orr": "Sardakk N'orr",
-  "xxcha_kingdom": "Królestwo Xxcha"
+  "xxcha_kingdom": "Królestwo Xxcha",
+
+  "race_used_game": "Rasy użyte w grze:",
+
+  "game_result_rationale_won": "Gratulacje wygranej!",
+  "game_result_rationale_draw": "Nieźle, spektakularny remis",
+  "game_result_rationale_lose": "Przegrałeś, powodzenia następnym razem."
 }
