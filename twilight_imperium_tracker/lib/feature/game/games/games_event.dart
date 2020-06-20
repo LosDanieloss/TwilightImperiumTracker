@@ -4,18 +4,15 @@ import 'package:twilight_imperium_tracker/feature/game/Game.dart';
 @immutable
 abstract class GamesEvent {}
 
-class LoadGamesEvent extends GamesEvent {}
-
 class AddNewGameEvent extends GamesEvent {}
 
-class ChangeGameEvent extends GamesEvent {}
+class GamesChangedEvent extends GamesEvent {
+  final List<Game> games;
 
-class NewGameAddedEvent extends GamesEvent {}
-
-class GamesChangedEvent extends GamesEvent {}
+  GamesChangedEvent({@required this.games});
+}
 
 class DeleteGameEvent extends GamesEvent {
-
   final Game game;
 
   DeleteGameEvent({@required this.game});

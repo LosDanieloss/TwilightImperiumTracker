@@ -26,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
                 appBar: AppBar(
                   elevation: 8,
                   centerTitle: true,
-                  title: Text(Translations.of(context).text('home_page_title')),
+                  title: Text(Translations.of(context).text('app_name')),
                 ),
                 body: BlocBuilder(
                   bloc: _bloc,

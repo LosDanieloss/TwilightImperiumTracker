@@ -25,7 +25,7 @@ class FirebaseGamesRepository implements GamesRepository {
   }
 
   _onGameChanged(Event event) {
-    var old = _games.singleWhere((game) {
+    final old = _games.singleWhere((game) {
       return game.key == event.snapshot.key;
     });
     _games[_games.indexOf(old)] = Game.fromSnapshot(event.snapshot);
@@ -33,7 +33,7 @@ class FirebaseGamesRepository implements GamesRepository {
   }
 
   _onGameRemoved(Event event) {
-    var removedGame = _games.singleWhere((game) {
+    final removedGame = _games.singleWhere((game) {
       return game.key == event.snapshot.key;
     });
     _games.remove(removedGame);

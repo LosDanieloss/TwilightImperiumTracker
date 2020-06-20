@@ -17,7 +17,6 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
@@ -36,8 +35,8 @@ class MyApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
         ],
         supportedLocales: [
-          const Locale('en', ''),
-          const Locale('pl', ''),
+          const Locale('en'),
+          const Locale('pl'),
         ],
         initialRoute: LoginPage.route,
         routes: {

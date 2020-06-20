@@ -28,7 +28,7 @@ class _GamesPageState extends State<GamesPage> {
       appBar: AppBar(
         elevation: 8,
         centerTitle: true,
-        title: Text(Translations.of(context).text('home_page_title')),
+        title: Text(Translations.of(context).text('app_name')),
       ),
       body: BlocProvider(
         create: (BuildContext context) {
@@ -182,7 +182,7 @@ class _GamesPageState extends State<GamesPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(Translations.of(context).text('home_page_title')),
+        title: Text(Translations.of(context).text('app_name')),
         content: Text(Translations.of(context).text('game_delete_rationale')),
         actions: <Widget>[
           FlatButton(

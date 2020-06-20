@@ -28,7 +28,7 @@ class _AddGamePageState extends State<AddGamePage> {
       appBar: AppBar(
         elevation: 8,
         centerTitle: true,
-        title: Text(_translations.text('home_page_title')),
+        title: Text(_translations.text('app_name')),
       ),
       body: SingleChildScrollView(
         child: Padding(
