@@ -1,7 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:twilight_imperium_tracker/Translations.dart';
 
 part 'Game.g.dart';
 
@@ -20,13 +18,8 @@ class Game {
 
   Map<String, dynamic> toJson() => _$GameToJson(this);
 
-  Game.fromSnapshot(DataSnapshot snapshot)
-      : key = snapshot.key,
-        raceUsed = Race.values[snapshot.value["raceUsed"]],
-        points = snapshot.value["points"],
-        goal = snapshot.value["goal"],
-        result = GameResult.values[snapshot.value["result"]],
-        opponents = snapshot.value["opponents"];
+  factory Game.fromSnapshot(DataSnapshot snapshot) =>
+      Game.fromJson(Map<String, dynamic>.from(snapshot.value))..key = snapshot.key;
 
   Game copy({raceUsed, points, goal, result, opponents}) => Game(
       raceUsed: raceUsed ?? this.raceUsed,

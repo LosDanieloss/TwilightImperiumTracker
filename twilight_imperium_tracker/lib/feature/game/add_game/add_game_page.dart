@@ -17,17 +17,18 @@ class AddGamePage extends StatefulWidget {
 }
 
 class _AddGamePageState extends State<AddGamePage> {
-  final _bloc = AddGameBloc();
+  AddGameBloc _bloc;
 
   @override
   Widget build(BuildContext context) {
     final _translations = Translations.of(context);
+    _bloc = AddGameBloc(repository: RepositoryProvider.of(context));
 
     return Scaffold(
       appBar: AppBar(
         elevation: 8,
         centerTitle: true,
-        title: Text(_translations.text('home_page_title')),
+        title: Text(_translations.text('app_name')),
       ),
       body: SingleChildScrollView(
         child: Padding(

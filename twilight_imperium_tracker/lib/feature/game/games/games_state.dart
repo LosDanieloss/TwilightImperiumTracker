@@ -12,7 +12,7 @@ class InitialGamesBlocState extends GamesState {}
 
 class LoadedGamesBlocState extends GamesState {
 
-  LoadedGamesBlocState({games}) : super(games: games);
+  LoadedGamesBlocState({List<Game> games}) : super(games: games);
 }
 
 class AddNewGameBlocState extends GamesState {

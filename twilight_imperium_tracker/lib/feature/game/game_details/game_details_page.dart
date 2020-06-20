@@ -22,7 +22,7 @@ class GameDetails extends StatelessWidget {
       appBar: AppBar(
         elevation: 8,
         centerTitle: true,
-        title: Text(translations.text('home_page_title')),
+        title: Text(translations.text('app_name')),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(

@@ -1,14 +1,17 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:twilight_imperium_tracker/App.dart';
+import 'package:flutter/material.dart';
 import 'package:twilight_imperium_tracker/feature/game/Game.dart';
 import 'package:twilight_imperium_tracker/feature/game/add_game/add_game_event.dart';
 import 'package:twilight_imperium_tracker/feature/game/add_game/add_game_state.dart';
+import 'package:twilight_imperium_tracker/repository/GamesRepository.dart';
 import './bloc.dart';
 
 class AddGameBloc extends Bloc<AddGameEvent, AddGameState> {
-  DatabaseReference _gamesRef = FirebaseDatabase.instance.reference().child(user.uid).child("games");
+
+  final GamesRepository repository;
+
+  AddGameBloc({@required this.repository});
 
   @override
   AddGameState get initialState => AddGameInProgressState(game: Game());
@@ -38,7 +41,7 @@ class AddGameBloc extends Bloc<AddGameEvent, AddGameState> {
     }
 
     if (event is SaveGame) {
-      _saveGame();
+      await _saveGame();
       yield GameAdded();
     }
   }
@@ -57,7 +60,7 @@ class AddGameBloc extends Bloc<AddGameEvent, AddGameState> {
     return state.copy(state.game.copy(opponents: newOpponents));
   }
 
-  void _saveGame() {
-    _gamesRef.push().set(state.game.toJson());
+  Future<void> _saveGame() async {
+    await repository.saveGame(state.game);
   }
 }
