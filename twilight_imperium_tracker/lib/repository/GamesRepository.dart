@@ -4,4 +4,5 @@ abstract class GamesRepository {
   Future<void> prepareUser();
   Stream<List<Game>> getGames();
   Future<void> saveGame(Game game);
+  Future<void> deleteGame(Game game);
 }

@@ -169,13 +169,35 @@ class _GamesPageState extends State<GamesPage> {
       color: Colors.grey,
       icon: Icon(Icons.delete),
       onPressed: () {
-        /* TODO show dialog asking if user is sure */
-        Fluttertoast.showToast(
-          msg: "Not implemented",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-        );
+        _showDeleteDialog(context: context, game: game);
       },
+    );
+  }
+
+  void _showDeleteDialog({@required BuildContext context, @required Game game}) {
+    /* MARK
+        consider introducing Styles.dart that would have styled alert dialog
+        such style should take content widget, yes & no actions
+    */
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(Translations.of(context).text('home_page_title')),
+        content: Text(Translations.of(context).text('game_delete_rationale')),
+        actions: <Widget>[
+          FlatButton(
+              child: Text(Translations.of(context).text('no').toUpperCase()),
+              onPressed: () { Navigator.of(context).pop(); }
+          ),
+          FlatButton(
+              child: Text(Translations.of(context).text('yes').toUpperCase()),
+              onPressed: () {
+                _bloc.add(DeleteGameEvent(game: game));
+                Navigator.of(context).pop();
+              }
+          )
+        ],
+      ),
     );
   }
 

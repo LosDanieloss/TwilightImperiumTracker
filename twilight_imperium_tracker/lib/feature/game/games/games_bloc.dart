@@ -31,5 +31,9 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
     if (event is GamesChangedEvent) {
       yield LoadedGamesBlocState(games: _games);
     }
+    if (event is DeleteGameEvent) {
+      final gameToDelete = event.game;
+      repository.deleteGame(gameToDelete);
+    }
   }
 }

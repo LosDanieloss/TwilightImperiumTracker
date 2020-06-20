@@ -14,6 +14,8 @@
   "win": "win",
   "draw": "draw",
   "lose": "lose",
+  "yes": "yes",
+  "no": "no",
 
   "arborec": "The Arborec",
   "embers_of_muaat": "The Embers of Muaat",
@@ -38,5 +40,7 @@
 
   "game_result_rationale_won": "Congratulation! You have won.",
   "game_result_rationale_draw": "Not bad. It's a draw.",
-  "game_result_rationale_lose": "You lose. Better luck next time."
+  "game_result_rationale_lose": "You lose. Better luck next time.",
+
+  "game_delete_rationale": "Are you sure you want to delete this game?"
 }

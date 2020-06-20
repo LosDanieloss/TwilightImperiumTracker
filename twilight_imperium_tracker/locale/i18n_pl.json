@@ -14,6 +14,8 @@
   "win": "wygrana",
   "draw": "remis",
   "lose": "przegrana",
+  "yes": "tak",
+  "no": "nie",
 
   "arborec": "Arborekowie",
   "embers_of_muaat": "Żagwie Muaat",
@@ -38,5 +40,7 @@
 
   "game_result_rationale_won": "Gratulacje wygranej!",
   "game_result_rationale_draw": "Nieźle, spektakularny remis",
-  "game_result_rationale_lose": "Przegrałeś, powodzenia następnym razem."
+  "game_result_rationale_lose": "Przegrałeś, powodzenia następnym razem.",
+
+  "game_delete_rationale": "Czy na pewno chcesz usunąć te grę?"
 }
