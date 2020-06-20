@@ -11,4 +11,4 @@ class ChangeGameEvent extends GamesEvent {}
 
 class NewGameAddedEvent extends GamesEvent {}
 
-class GameChangedEvent extends GamesEvent {}
+class GamesChangedEvent extends GamesEvent {}

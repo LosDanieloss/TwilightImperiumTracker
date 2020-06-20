@@ -1,19 +1,22 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:twilight_imperium_tracker/App.dart';
+import 'package:flutter/material.dart';
 import 'package:twilight_imperium_tracker/feature/game/Game.dart';
+import 'package:twilight_imperium_tracker/repository/GamesRepository.dart';
 import './bloc.dart';
 
 class GamesBloc extends Bloc<GamesEvent, GamesState> {
-  final List<Game> _games = [];
-  DatabaseReference _gamesRef;
+  final GamesRepository repository;
+  List<Game> _games = [];
+
+  GamesBloc({@required this.repository});
 
   @override
   GamesState get initialState {
-    _gamesRef = FirebaseDatabase.instance.reference().child(user.uid).child("games");
-    _gamesRef.onChildAdded.listen(_onGameAdded);
-    _gamesRef.onChildChanged.listen(_onGameChanged);
+    repository.getGames().listen((games) {
+      _games = games;
+      add(GamesChangedEvent());
+    });
     return InitialGamesBlocState();
   }
 
@@ -25,21 +28,8 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
     if (event is AddNewGameEvent) {
       yield AddNewGameBlocState(games: state.games);
     }
-    if (event is NewGameAddedEvent || event is GameChangedEvent) {
+    if (event is GamesChangedEvent) {
       yield LoadedGamesBlocState(games: _games);
     }
-  }
-
-  void _onGameAdded(Event event) {
-    _games.add(Game.fromJson(Map<String, dynamic>.from(event.snapshot.value)));
-    add(NewGameAddedEvent());
-  }
-
-  _onGameChanged(Event event) {
-    var old = _games.singleWhere((game) {
-      return game.key == event.snapshot.key;
-    });
-    _games[_games.indexOf(old)] = Game.fromJson(Map<String, dynamic>.from(event.snapshot.value));
-    add(GameChangedEvent());
   }
 }

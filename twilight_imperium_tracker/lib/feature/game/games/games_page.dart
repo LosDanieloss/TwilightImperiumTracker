@@ -10,6 +10,7 @@ import 'package:twilight_imperium_tracker/feature/game/add_game/add_game_page.da
 import 'package:twilight_imperium_tracker/feature/game/game_details/game_details_page.dart';
 import 'package:twilight_imperium_tracker/feature/game/games/bloc.dart';
 import 'package:twilight_imperium_tracker/feature/utils/Navigation.dart';
+import 'package:twilight_imperium_tracker/repository/FirebaseGamesRepository.dart';
 
 class GamesPage extends StatefulWidget {
   static const route = "/games";
@@ -19,7 +20,7 @@ class GamesPage extends StatefulWidget {
 }
 
 class _GamesPageState extends State<GamesPage> {
-  final _bloc = GamesBloc();
+  final _bloc = GamesBloc(repository: FirebaseGamesRepository());
   final _datePattern = "dd.MM.yyyy";
 
   @override
