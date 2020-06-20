@@ -4,6 +4,7 @@ import 'package:twilight_imperium_tracker/Translations.dart';
 import 'package:twilight_imperium_tracker/feature/game/games/games_page.dart';
 import 'package:twilight_imperium_tracker/feature/login/bloc.dart';
 import 'package:twilight_imperium_tracker/feature/utils/Navigation.dart';
+import 'package:twilight_imperium_tracker/repository/GamesRepository.dart';
 
 class LoginPage extends StatefulWidget {
   static const route = "/";
@@ -47,8 +48,9 @@ class _LoginPageState extends State<LoginPage> {
                   }
                 ),
               ),
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is LoginSuccessfulState) {
+            await RepositoryProvider.of<GamesRepository>(context).prepareUser();
             pushReplacementNamed(context, GamesPage.route);
           }
         },

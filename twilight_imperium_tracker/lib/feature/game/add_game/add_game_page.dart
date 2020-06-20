@@ -17,11 +17,12 @@ class AddGamePage extends StatefulWidget {
 }
 
 class _AddGamePageState extends State<AddGamePage> {
-  final _bloc = AddGameBloc();
+  AddGameBloc _bloc;
 
   @override
   Widget build(BuildContext context) {
     final _translations = Translations.of(context);
+    _bloc = AddGameBloc(repository: RepositoryProvider.of(context));
 
     return Scaffold(
       appBar: AppBar(

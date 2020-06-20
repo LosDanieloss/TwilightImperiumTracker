@@ -8,13 +8,16 @@ import 'package:twilight_imperium_tracker/repository/GamesRepository.dart';
 
 class FirebaseGamesRepository implements GamesRepository {
 
-  final DatabaseReference _gamesRef = FirebaseDatabase.instance.reference().child(user.uid).child("games");
-  final StreamController<List<Game>> _gamesStream = StreamController();
+  final StreamController<List<Game>> _gamesStream = StreamController()..add([]);
   final List<Game> _games = [];
+  DatabaseReference _gamesRef;
 
-  FirebaseGamesRepository() {
+  @override
+  Future<void> prepareUser() {
+    _gamesRef = FirebaseDatabase.instance.reference().child(user.uid).child("games");
     _gamesRef.onChildAdded.listen(_onGameAdded);
     _gamesRef.onChildChanged.listen(_onGameChanged);
+    return Future.value();
   }
 
   @override
@@ -33,5 +36,10 @@ class FirebaseGamesRepository implements GamesRepository {
     });
     _games[_games.indexOf(old)] = Game.fromJson(Map<String, dynamic>.from(event.snapshot.value));
     _gamesStream.add(_games);
+  }
+
+  @override
+  Future<void> saveGame(Game game) {
+    return _gamesRef.push().set(game.toJson());
   }
 }
